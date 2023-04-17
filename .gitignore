@@ -5,6 +5,8 @@
 # environment variables
 .env
 
+/prisma
+
 # Logs
 logs
 *.log
