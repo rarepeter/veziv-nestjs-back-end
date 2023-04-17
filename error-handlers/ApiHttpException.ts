@@ -4,7 +4,10 @@ type TExceptionResponseType =
   | 'email_already_registered'
   | 'token_sign_error'
   | 'error_while_creating_user'
-  | 'access_forbidden';
+  | 'access_forbidden'
+  | 'failed_db_fetch'
+  | 'failed_db_entity_creation'
+  | 'failed_db_entity_modification';
 
 interface IHttpExceptionResponse {
   type: TExceptionResponseType;
@@ -30,6 +33,45 @@ export class ForbiddenHttpException extends ApiHttpException {
         solution: 'Login to access.',
       },
       HttpStatus.FORBIDDEN,
+    );
+  }
+}
+
+export class FailedDbFetchHttpException extends ApiHttpException {
+  constructor() {
+    super(
+      {
+        type: 'failed_db_fetch',
+        message: 'Failed fetching the data from the database.',
+        solution: 'Try again later.',
+      },
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
+  }
+}
+
+export class FailedDbEntityCreationHttpException extends ApiHttpException {
+  constructor() {
+    super(
+      {
+        type: 'failed_db_entity_creation',
+        message: 'Failed creating a database entity.',
+        solution: 'Try again later.',
+      },
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
+  }
+}
+
+export class FailedDbEntityModificationHttpException extends ApiHttpException {
+  constructor() {
+    super(
+      {
+        type: 'failed_db_entity_modification',
+        message: 'Failed modifying a database entity.',
+        solution: 'Try again later.',
+      },
+      HttpStatus.INTERNAL_SERVER_ERROR,
     );
   }
 }

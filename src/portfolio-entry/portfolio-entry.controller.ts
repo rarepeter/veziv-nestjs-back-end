@@ -1,6 +1,15 @@
-import { Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { PortfolioEntryService } from './portfolio-entry.service';
 import { AuthGuard } from '../auth/guards';
+import { PortfolioEntryDto } from './dto';
 
 @Controller('portfolio-entries')
 export class PortfolioEntryController {
@@ -18,11 +27,20 @@ export class PortfolioEntryController {
   }
 
   @Post()
-  async addPortfolioEntry() {}
+  @UseGuards(AuthGuard)
+  async addPortfolioEntry(@Body() newPortfolioEntryDto: PortfolioEntryDto) {
+    return this.portfolioEntryService.addPortfolioEntry(newPortfolioEntryDto);
+  }
 
   @Put(':id')
-  async modifyPortfolioEntry() {}
-
-  @Put('/toggle-visibility/:id')
-  async togglePortfolioEntryVisibility() {}
+  @UseGuards(AuthGuard)
+  async modifyPortfolioEntry(
+    @Param('id') portfolioEntryId,
+    @Body() modifiedPortfolioEntryDto: PortfolioEntryDto,
+  ) {
+    return this.portfolioEntryService.modifyPortfolioEntry(
+      portfolioEntryId,
+      modifiedPortfolioEntryDto,
+    );
+  }
 }

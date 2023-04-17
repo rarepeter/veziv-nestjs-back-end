@@ -20,7 +20,7 @@ model User {
 
 model PortfolioEntry {
   id          String  @id @default(uuid())
-  title       String
+  title       String  @default("Untitled")
   description String?
 
   clientName   String?
@@ -29,7 +29,7 @@ model PortfolioEntry {
 
   coverImageUrl String?
 
-  isPubliclyVisible Boolean
+  isPubliclyVisible Boolean @default(false)
 
   @@map("portfolio_entries")
 }
