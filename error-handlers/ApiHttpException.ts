@@ -7,7 +7,8 @@ type TExceptionResponseType =
   | 'access_forbidden'
   | 'failed_db_fetch'
   | 'failed_db_entity_creation'
-  | 'failed_db_entity_modification';
+  | 'failed_db_entity_modification'
+  | 'internal_server_error';
 
 interface IHttpExceptionResponse {
   type: TExceptionResponseType;
@@ -16,11 +17,8 @@ interface IHttpExceptionResponse {
 }
 
 export class ApiHttpException extends HttpException {
-  constructor(
-    private readonly data: IHttpExceptionResponse,
-    status: HttpStatus,
-  ) {
-    super(data, status);
+  constructor(data: IHttpExceptionResponse, statusCode: HttpStatus) {
+    super({ statusCode, ...data }, statusCode);
   }
 }
 
