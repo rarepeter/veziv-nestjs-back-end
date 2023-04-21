@@ -8,7 +8,9 @@ type TExceptionResponseType =
   | 'failed_db_fetch'
   | 'failed_db_entity_creation'
   | 'failed_db_entity_modification'
-  | 'internal_server_error';
+  | 'internal_server_error'
+  | 'invalid_credentials'
+  | 'token_invalid';
 
 interface IHttpExceptionResponse {
   type: TExceptionResponseType;
@@ -22,6 +24,19 @@ export class ApiHttpException extends HttpException {
   }
 }
 
+export class InvalidTokenHttpException extends ApiHttpException {
+  constructor() {
+    super(
+      {
+        type: 'token_invalid',
+        message: 'Access forbidden.',
+        solution: 'Login to access.',
+      },
+      HttpStatus.FORBIDDEN,
+    );
+  }
+}
+
 export class ForbiddenHttpException extends ApiHttpException {
   constructor() {
     super(
@@ -29,6 +44,19 @@ export class ForbiddenHttpException extends ApiHttpException {
         type: 'access_forbidden',
         message: 'Access forbidden.',
         solution: 'Login to access.',
+      },
+      HttpStatus.FORBIDDEN,
+    );
+  }
+}
+
+export class InvalidCredentialsHttpException extends ApiHttpException {
+  constructor() {
+    super(
+      {
+        type: 'invalid_credentials',
+        message: 'You have provided invalid credentials.',
+        solution: 'Try again.',
       },
       HttpStatus.FORBIDDEN,
     );

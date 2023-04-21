@@ -6,6 +6,7 @@ import {
   FailedDbFetchHttpException,
 } from '../../error-handlers/ApiHttpException';
 import { PortfolioEntryDto } from './dto';
+import { PortfolioEntry } from '@prisma/client';
 
 @Injectable()
 export class PortfolioEntryService {
@@ -41,6 +42,7 @@ export class PortfolioEntryService {
 
   async addPortfolioEntry(newPortfolioEntryDto: PortfolioEntryDto) {
     try {
+      console.log(newPortfolioEntryDto);
       const newPortfolioEntry = await this.prisma.portfolioEntry.create({
         data: newPortfolioEntryDto,
       });
@@ -67,5 +69,21 @@ export class PortfolioEntryService {
     } catch (error) {
       throw new FailedDbEntityModificationHttpException();
     }
+  }
+
+  async setCoverImageUrl(
+    projectId: PortfolioEntry['id'],
+    coverImageUrl: string,
+  ) {
+    const updatedPortfolioEntry = await this.prisma.portfolioEntry.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        coverImageUrl,
+      },
+    });
+
+    return updatedPortfolioEntry;
   }
 }

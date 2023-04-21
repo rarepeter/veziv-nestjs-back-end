@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -15,13 +17,19 @@ export class AuthController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post('sign-up')
-  signUp(@Body() authDto: AuthDto) {
-    return this.authService.signUp(authDto);
+  async signUp(@Body() authDto: AuthDto) {
+    return await this.authService.signUp(authDto);
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('sign-in')
-  signIn(@Body() authDto: AuthDto) {
-    return this.authService.signIn(authDto);
+  async signIn(@Body() authDto: AuthDto) {
+    return await this.authService.signIn(authDto);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('verify-token/:accesstoken')
+  verifyToken(@Param('accesstoken') accessToken: string) {
+    return this.authService.verifyToken(accessToken);
   }
 }

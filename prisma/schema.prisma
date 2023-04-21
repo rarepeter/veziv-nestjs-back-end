@@ -23,13 +23,25 @@ model PortfolioEntry {
   title       String  @default("Untitled")
   description String?
 
-  clientName   String?
-  clientLink   String?
+  clientName   String
+  clientLink   String
   clientReview String?
 
   coverImageUrl String?
 
   isPubliclyVisible Boolean @default(false)
 
+  images PortfolioEntryImage[]
+
   @@map("portfolio_entries")
+}
+
+model PortfolioEntryImage {
+  id       String @id @default(uuid())
+  orderNum Int
+
+  PortfolioEntry   PortfolioEntry @relation(fields: [portfolioEntryId], references: [id])
+  portfolioEntryId String
+
+  @@unique([portfolioEntryId, orderNum])
 }

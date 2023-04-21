@@ -1,11 +1,21 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
-import { ApiHttpException } from '../../error-handlers/ApiHttpException';
+import {
+  ApiHttpException,
+  ForbiddenHttpException,
+  InvalidCredentialsHttpException,
+  InvalidTokenHttpException,
+} from '../../error-handlers/ApiHttpException';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +25,17 @@ export class AuthService {
     private jwtService: JwtService,
     private config: ConfigService,
   ) {}
+
+  verifyToken(accessToken: string) {
+    try {
+      const isTokenValid = this.jwtService.verify(accessToken, {
+        secret: this.config.get('JWT_SECRET'),
+      });
+      if (isTokenValid) return;
+    } catch (error) {
+      throw new InvalidTokenHttpException();
+    }
+  }
 
   async signUp(createUserDto: AuthDto) {
     const existingUser = await this.userService.findUserByEmail(
@@ -48,6 +69,8 @@ export class AuthService {
     if (pwMatch) {
       return await this.signToken(foundUser.id, foundUser.email);
     }
+
+    throw new InvalidCredentialsHttpException();
   }
 
   private async signToken(
