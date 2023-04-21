@@ -43,7 +43,6 @@ export class PortfolioEntryService {
 
   async addPortfolioEntry(newPortfolioEntryDto: PortfolioEntryDto) {
     try {
-      console.log(newPortfolioEntryDto);
       const newPortfolioEntry = await this.prisma.portfolioEntry.create({
         data: newPortfolioEntryDto,
       });
