@@ -4,7 +4,7 @@ import {
   FailedDbEntityCreationHttpException,
   FailedDbEntityModificationHttpException,
   FailedDbFetchHttpException,
-} from '../../error-handlers/ApiHttpException';
+} from '../error-handlers/ApiHttpException';
 import { PortfolioEntryDto } from './dto';
 import { PortfolioEntry } from '@prisma/client';
 

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { ForbiddenHttpException } from '../../../error-handlers/ApiHttpException';
+import { ForbiddenHttpException } from '../../error-handlers/ApiHttpException';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

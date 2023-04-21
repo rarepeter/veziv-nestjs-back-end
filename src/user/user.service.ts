@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto, UserDto } from '../auth/dto';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
-import { ApiHttpException } from '../../error-handlers/ApiHttpException';
+import { ApiHttpException } from '../error-handlers/ApiHttpException';
 
 @Injectable()
 export class UserService {

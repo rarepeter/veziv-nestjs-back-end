@@ -3,7 +3,7 @@ import { PortfolioEntry } from '@prisma/client';
 import * as path from 'path';
 import * as fs from 'fs';
 import { PrismaService } from '../prisma/prisma.service';
-import { ApiHttpException } from '../../error-handlers/ApiHttpException';
+import { ApiHttpException } from '../error-handlers/ApiHttpException';
 import { PortfolioEntryService } from '../portfolio-entry/portfolio-entry.service';
 
 const SERVER_URL = 'http://localhost:5000';

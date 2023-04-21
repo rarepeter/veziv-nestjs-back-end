@@ -15,7 +15,7 @@ import {
   ForbiddenHttpException,
   InvalidCredentialsHttpException,
   InvalidTokenHttpException,
-} from '../../error-handlers/ApiHttpException';
+} from '../error-handlers/ApiHttpException';
 
 @Injectable()
 export class AuthService {
