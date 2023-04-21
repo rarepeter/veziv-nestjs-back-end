@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import {
+  ApiHttpException,
   FailedDbEntityCreationHttpException,
   FailedDbEntityModificationHttpException,
   FailedDbFetchHttpException,
@@ -85,5 +86,26 @@ export class PortfolioEntryService {
     });
 
     return updatedPortfolioEntry;
+  }
+
+  async deletePortfolioEntry(projectId: PortfolioEntry['id']) {
+    try {
+      const deletedEntry = await this.prisma.portfolioEntry.delete({
+        where: {
+          id: projectId,
+        },
+      });
+
+      return;
+    } catch (err) {
+      throw new ApiHttpException(
+        {
+          message: 'Failed to delete project.',
+          solution: 'Try again later.',
+          type: 'failed_db_entity_deletion',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

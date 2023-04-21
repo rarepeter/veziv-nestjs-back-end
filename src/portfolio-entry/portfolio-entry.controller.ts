@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -10,37 +13,53 @@ import {
 import { PortfolioEntryService } from './portfolio-entry.service';
 import { AuthGuard } from '../auth/guards';
 import { PortfolioEntryDto } from './dto';
+import { PortfolioEntry } from '@prisma/client';
 
 @Controller('portfolio-entries')
 export class PortfolioEntryController {
   constructor(private portfolioEntryService: PortfolioEntryService) {}
 
+  @HttpCode(HttpStatus.OK)
   @Get('all')
   @UseGuards(AuthGuard)
   async getAllPortfolioEntries() {
-    return this.portfolioEntryService.getAll();
+    return await this.portfolioEntryService.getAll();
   }
 
+  @HttpCode(HttpStatus.OK)
   @Get('public')
   async getPublicPortfolioEntries() {
-    return this.portfolioEntryService.getPublic();
+    return await this.portfolioEntryService.getPublic();
   }
 
+  @HttpCode(HttpStatus.CREATED)
   @Post()
   @UseGuards(AuthGuard)
   async addPortfolioEntry(@Body() newPortfolioEntryDto: PortfolioEntryDto) {
-    return this.portfolioEntryService.addPortfolioEntry(newPortfolioEntryDto);
+    return await this.portfolioEntryService.addPortfolioEntry(
+      newPortfolioEntryDto,
+    );
   }
 
-  @Put(':id')
+  @HttpCode(HttpStatus.OK)
+  @Put(':projectId')
   @UseGuards(AuthGuard)
   async modifyPortfolioEntry(
-    @Param('id') portfolioEntryId,
+    @Param('projectId') portfolioEntryId: string,
     @Body() modifiedPortfolioEntryDto: PortfolioEntryDto,
   ) {
-    return this.portfolioEntryService.modifyPortfolioEntry(
+    return await this.portfolioEntryService.modifyPortfolioEntry(
       portfolioEntryId,
       modifiedPortfolioEntryDto,
     );
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Delete(':projectId')
+  @UseGuards(AuthGuard)
+  async deletePortfolioEntry(
+    @Param('projectId') projectId: PortfolioEntry['id'],
+  ) {
+    return await this.portfolioEntryService.deletePortfolioEntry(projectId);
   }
 }

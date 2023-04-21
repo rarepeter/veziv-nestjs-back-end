@@ -8,6 +8,7 @@ type TExceptionResponseType =
   | 'failed_db_fetch'
   | 'failed_db_entity_creation'
   | 'failed_db_entity_modification'
+  | 'failed_db_entity_deletion'
   | 'internal_server_error'
   | 'invalid_credentials'
   | 'token_invalid';
