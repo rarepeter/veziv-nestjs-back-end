@@ -89,6 +89,12 @@ export class PortfolioEntryService {
 
   async deletePortfolioEntry(projectId: PortfolioEntry['id']) {
     try {
+      const deletedImages = await this.prisma.portfolioEntryImage.deleteMany({
+        where: {
+          portfolioEntryId: projectId,
+        },
+      });
+      
       const deletedEntry = await this.prisma.portfolioEntry.delete({
         where: {
           id: projectId,
